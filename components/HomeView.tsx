@@ -233,7 +233,10 @@ export default function HomeView({ doc, error }: { doc: Doc; error: string }) {
 
       <footer className="foot">
         <span>{menu ? `公告於 ${new Date(menu.publishedAt).toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' })}` : ''}</span>
-        <a href="/admin">管理</a>
+        <span className="foot-links">
+          {menu ? <a href={`/print?month=${month}`}>列印／下載 PDF</a> : null}
+          <a href="/admin">管理</a>
+        </span>
       </footer>
     </>
   );

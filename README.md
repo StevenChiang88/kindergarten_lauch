@@ -8,6 +8,7 @@
 |---|---|
 | `app/page.tsx` | 首頁，每次開啟都從資料庫讀最新菜單 |
 | `app/admin/page.tsx` | 管理頁 |
+| `app/print/page.tsx` | 列印版（照紙本格式的 A4 表格，用瀏覽器列印存成 PDF） |
 | `app/api/menu/route.ts` | 讀取、公告菜單，儲存網站設定 |
 | `app/api/auth/route.ts` | 驗證管理密碼 |
 | `components/` | 首頁與管理頁的畫面 |

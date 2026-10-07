@@ -192,6 +192,18 @@ export default function AdminView() {
     } catch (e) { fail(e); }
   };
 
+  // 收回公告：首頁這個月回到「還沒公告」，菜單內容留在管理頁可以繼續改
+  const unpublish = async () => {
+    if (!(await ask(`收回${monthLabel(draft.month)}的公告？`, '家長首頁上這個月會變回「還沒公告」。菜單內容會留在這裡，改好可以再公告。', '收回公告'))) return;
+    try {
+      local.set(draftKey(draft.month), draft);
+      local.set('lunch-admin-month', draft.month);
+      setDoc(await call<Doc>('DELETE', `/api/menu?month=${draft.month}`, undefined, password));
+      setFlash({ type: 'ok', text: `已收回${monthLabel(draft.month)}的公告。`, link: true });
+      window.scrollTo(0, 0);
+    } catch (e) { fail(e); }
+  };
+
   const saveSettings = async () => {
     try {
       const body = { settings: { siteName: form.siteName.trim(), note: form.note.trim(), showBaby: form.showBaby } };
@@ -293,7 +305,9 @@ export default function AdminView() {
         {checks('點心吃麵包、飯糰配豆漿的日子', 'bakeryDays')}
         <div className="row-actions">
           <button type="button" className="btn primary" onClick={generate}>{draft.days.length ? '重新隨機產生整個月' : '隨機產生整個月'}</button>
-          <span className="hint">{published ? `${monthLabel(draft.month)}已公告過，再次公告會取代它。` : `${monthLabel(draft.month)}還沒公告。`}</span>
+          <span className="hint">{published ? `${monthLabel(draft.month)}已公告，再次公告會取代它。` : `${monthLabel(draft.month)}還沒公告。`}</span>
+          {published ? <button type="button" className="btn quiet" onClick={unpublish}>收回公告</button> : null}
+          {published ? <a href={`/print?month=${draft.month}`}>列印／下載 PDF</a> : null}
         </div>
       </section>
 

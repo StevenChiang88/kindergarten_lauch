@@ -62,3 +62,17 @@ export async function PUT(req: Request) {
     return json(doc);
   } catch (e) { return fail(e); }
 }
+
+// ?month=YYYY-MM 收回某個月已公告的菜單（首頁回到「還沒公告」）
+export async function DELETE(req: Request) {
+  const bad = checkAdmin(req);
+  if (bad) return json({ error: bad.error }, bad.status);
+  try {
+    const month = new URL(req.url).searchParams.get('month') ?? '';
+    const doc = await read();
+    if (!doc.months[month]) return json({ error: '這個月沒有已公告的菜單' }, 404);
+    delete doc.months[month];
+    await write(doc);
+    return json(doc);
+  } catch (e) { return fail(e); }
+}
