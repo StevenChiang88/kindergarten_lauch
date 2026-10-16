@@ -29,7 +29,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ m
         </span>
         {menu ? <PrintButton /> : null}
       </div>
-      {menu ? <p className="hint print-hint">按「下載 PDF」後，在列印視窗的目的地（印表機）選「另存為 PDF」，紙張選 A4。</p> : null}
+      {menu ? <p className="hint print-hint">按「下載 PDF」後，在列印視窗的目的地（印表機）選「另存為 PDF」，紙張選 A4、方向選橫向。</p> : null}
       {error ? <p className="banner err">{`菜單讀取失敗：${error}`}</p> : null}
       {menu && month ? (
         <PrintSheet month={month} menu={menu} settings={withDefaults(doc.settings)} />
